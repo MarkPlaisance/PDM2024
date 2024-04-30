@@ -9,11 +9,12 @@
 
 let chestOpened = false;
 let items = ["i1", "i2", "i3", "i4", "i5", "i6", "i7", "i8", "i9", "i10"]; // All items (currently nameless) that can be pulled || Eventually all pngs
-let rarities = [1,2,3,4,5,6,7,8,9,10]; // Rarirty values
+//let rarities = [1,2,3,4,5,6,7,8,9,10]; // Rarirty values
 let chestOpenCount = 0; // Amount of chests opens
 let itemCounts = {}; // Number of items pulled
 let popupText = "";
 let chestImgOpen, chestImgClose;
+let rarity = ["Common","Uncommon","Rare","Epic", "Lengenary","LMtT"]; //Literally mike the tiger (0.1% chance of pulling) "Holy crap you literally pulled mike the tiger!"
 
 function preload(){
   chestImgOpen = loadImage('assets/chestClose.png');
@@ -102,3 +103,19 @@ function drawItemCount(){
     yPos += 20;
   }
 }
+
+function itemPull(){
+  rand = Math.floor(Math.random() * 101);
+  switch(rand){
+    case rand > 50:
+      rarity = Common;
+      break;
+    // Calculate the and set up the other switch cases for the other odds
+  }
+}
+
+/*
+ TODO what up future me. finish up the rest of the switch cases. i still need to do the math on how i would break up the 1-100 for each rarity. after that set up a function
+ that could just be another switch case for each rarity to do another random pull for each item in thar rariety
+ For eamplem case Common: random 1-4 to decide which common item is drawn
+*/
