@@ -9,12 +9,13 @@
 
 let chestOpened = false;
 let items = ["i1", "i2", "i3", "i4", "i5", "i6", "i7", "i8", "i9", "i10"]; // All items (currently nameless) that can be pulled || Eventually all pngs
-//let rarities = [1,2,3,4,5,6,7,8,9,10]; // Rarirty values
+let rarities = [1,2,3,4,5,6,7,8,9,10]; // Rarirty values
 let chestOpenCount = 0; // Amount of chests opens
 let itemCounts = {}; // Number of items pulled
 let popupText = "";
 let chestImgOpen, chestImgClose;
 let rarity = ["Common","Uncommon","Rare","Epic", "Lengenary","LMtT"]; //Literally mike the tiger (0.1% chance of pulling) "Holy crap you literally pulled mike the tiger!"
+//ive got a good feeling i should just initialize rarity as nothing cause i typed it like theyre multiple options but i think its just saying rarity is all of those
 
 function preload(){
   chestImgOpen = loadImage('assets/chestClose.png');
@@ -105,12 +106,42 @@ function drawItemCount(){
 }
 
 function itemPull(){
+  // Rolls 0-100 to pick rarity
   rand = Math.floor(Math.random() * 101); // Random 0-100
-  switch(rand){
-    case rand > 50:
-      rarity = Common;
+  if (rand <= 100 && rand > 55){ // Using rand to pick rarity
+    rarity = "Common";
+  } else if (rand <= 55 && rand > 31) {
+    rarity = "Uncommon";
+  } else if (rand <= 31 && rand > 16) {
+    rarity = "Rare";
+  } else if (rand <= 16 && rand > 6) {
+    rarity = "Epic";
+  } else if (rand <= 6 && rand > 1) {
+    rarity = "Legendary";
+  } else if (rand <= 1) {
+    rarity = "LMtT";
+  }
+
+  // Takes the rarity and rolls for an item in that rarity
+  switch(rarity){ 
+    case Common:
+      //Random number to pick item
       break;
-    // Calculate the and set up the other switch cases for the other odds
+    case Uncommon:
+      //RANDOM
+      break;
+    case Rare:
+      //RANDOM
+      break;
+    case Epic:
+      //RANDOM
+      break;
+    case Legendary:
+      //RANDOM
+      break;
+    case LMtT:
+      //MIKE
+      break;
   }
 }
 
