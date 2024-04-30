@@ -105,7 +105,7 @@ function drawItemCount(){
 }
 
 function itemPull(){
-  rand = Math.floor(Math.random() * 101);
+  rand = Math.floor(Math.random() * 101); // Random 0-100
   switch(rand){
     case rand > 50:
       rarity = Common;
