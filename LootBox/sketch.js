@@ -68,7 +68,7 @@ function mousePressed(){
   }
 }
 
-// 
+// TODO Most of this function outdated and needs to call itemPull instead of rolling for the item itself
 function openChest(){
   chestOpened = true;
   let randomIndex = floor(random(items.length));
@@ -87,7 +87,8 @@ function initializeItemCounts(){
   }
 }
 
-// TODO fix this so it properly counts item opened
+// TODO fix this so it properly counts item opened this
+// This could most likely be an extension of itemPull to know where to ++
 function updateItemCounts(){
   let randomIndex = floor(random(items.length));
   let item = items[randomIndex]; // I feel like this shouldnt be random
@@ -156,3 +157,5 @@ function itemPull(){
       break;
   }
 }
+
+//im a one man army call me ghengis khan
