@@ -1,3 +1,12 @@
+/* TODO
+  Generate Item Rarity. Most likely using random number gen and switch cases with the different ranges (may have old csc1350 code)
+  Select, import, and implement item pictures. Switch cases for matching item names to pick which picture to show when item is pulled
+  
+  Music: Box opening sound effect, sound effect for each item rarity, background music 
+  Arduino input and output: button to open it, light when opening or rbg light indicating rarity
+*/
+
+
 let chestOpened = false;
 let items = ["i1", "i2", "i3", "i4", "i5", "i6", "i7", "i8", "i9", "i10"]; // All items (currently nameless) that can be pulled || Eventually all pngs
 let rarities = [1,2,3,4,5,6,7,8,9,10]; // Rarirty values
