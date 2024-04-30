@@ -1,32 +1,35 @@
 /* TODO
-  Generate Item Rarity. Most likely using random number gen and switch cases with the different ranges (may have old csc1350 code)
-  Select, import, and implement item pictures. Switch cases for matching item names to pick which picture to show when item is pulled
-  
+  Select, import, and implement item pictures.
+  Put 1 item in each rarity so i can test the random 0-100 and the switch cases
+  Lay out the items i want and how many so i can divide them into the different switch cases
   Music: Box opening sound effect, sound effect for each item rarity, background music 
   Arduino input and output: button to open it, light when opening or rbg light indicating rarity
 */
 
 
-let chestOpened = false;
+let chestOpened = false; // Start with chest closed
 let items = ["i1", "i2", "i3", "i4", "i5", "i6", "i7", "i8", "i9", "i10"]; // All items (currently nameless) that can be pulled || Eventually all pngs
 let rarities = [1,2,3,4,5,6,7,8,9,10]; // Rarirty values
 let chestOpenCount = 0; // Amount of chests opens
 let itemCounts = {}; // Number of items pulled
-let popupText = "";
-let chestImgOpen, chestImgClose;
+let popupText = ""; // Blank String for pop up text
+let chestImgOpen, chestImgClose; // Load chest images
 let rarity = ["Common","Uncommon","Rare","Epic", "Lengenary","LMtT"]; //Literally mike the tiger (0.1% chance of pulling) "Holy crap you literally pulled mike the tiger!"
 //ive got a good feeling i should just initialize rarity as nothing cause i typed it like theyre multiple options but i think its just saying rarity is all of those
 
+// Preloads images
 function preload(){
   chestImgOpen = loadImage('assets/chestClose.png');
   chestImgClose = loadImage('assets/chestOpen.png');
 }
 
+// Sets up canvas and initializeItemCounts
 function setup() {
   createCanvas(800, 600);
   initializeItemCounts();
 }
 
+// Draws everything, calls functions for drawn elements
 function draw() {
   background(220);
   drawChest();
@@ -38,6 +41,7 @@ function draw() {
   }
 }
 
+// Draws open or closed chest depending on chestOpened state
 function drawChest(){
   if(!chestOpened){
     image(chestImgOpen, 190, 200, chestImgOpen.width, chestImgOpen.height);
@@ -46,16 +50,17 @@ function drawChest(){
   }
 }
 
+// Draws the counter of chests opened
 function drawCounter(){
   fill(0);
   textSize(18);
   text("Chest Opened: " + chestOpenCount, 100, 22);
 }
 
+// Handles pressing the mouse over area drawn over chest
 function mousePressed(){
   if (!chestOpened && mouseX > width / 2 - 50 && mouseX < width / 2 + 50 && mouseY > 500 - 100 && mouseY < 500 + 100){
     openChest();
-    chestOpenCount++;
     updateItemCounts();
     console.log("Chest Opened"); // Log to console for debugging
   } else {
@@ -63,6 +68,7 @@ function mousePressed(){
   }
 }
 
+// 
 function openChest(){
   chestOpened = true;
   let randomIndex = floor(random(items.length));
@@ -70,21 +76,25 @@ function openChest(){
   let rarity = rarities[randomIndex];
   console.log("You got: ", item, " with rarity: ", rarity); // Log to console for debugging
   popupText = ("You got: " + item + " with rarity: " + rarity + "\nClick to Continue");
+  chestOpenCount++;
   displayPopup();
 }
 
+// TODO fix how these work
 function initializeItemCounts(){
   for (let i = 0; i < items.length; i++){
     itemCounts[items[i]] = 0;
   }
 }
 
+// TODO fix this so it properly counts item opened
 function updateItemCounts(){
   let randomIndex = floor(random(items.length));
-  let item = items[randomIndex];
+  let item = items[randomIndex]; // I feel like this shouldnt be random
   itemCounts[item]++;
 }
 
+// Pops up (currently) a white square with text for item opened
 function displayPopup(){
   fill(255);
   rectMode(CENTER);
@@ -95,6 +105,7 @@ function displayPopup(){
   text(popupText, width / 2, 255);
 }
 
+// Draw the number of each item pulled on screen
 function drawItemCount(){
   fill(0);
   textSize(18);
@@ -105,10 +116,11 @@ function drawItemCount(){
   }
 }
 
+// Rolls 0-100 to pick rarity, then rolls again within rarity to pick item
 function itemPull(){
-  // Rolls 0-100 to pick rarity
+
   rand = Math.floor(Math.random() * 101); // Random 0-100
-  if (rand <= 100 && rand > 55){ // Using rand to pick rarity
+  if (rand <= 100 && rand > 55){
     rarity = "Common";
   } else if (rand <= 55 && rand > 31) {
     rarity = "Uncommon";
@@ -144,9 +156,3 @@ function itemPull(){
       break;
   }
 }
-
-/*
- TODO what up future me. finish up the rest of the switch cases. i still need to do the math on how i would break up the 1-100 for each rarity. after that set up a function
- that could just be another switch case for each rarity to do another random pull for each item in thar rariety
- For eamplem case Common: random 1-4 to decide which common item is drawn
-*/
