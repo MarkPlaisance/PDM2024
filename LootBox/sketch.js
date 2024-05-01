@@ -21,10 +21,10 @@ let itemCounts = {}; // Number of items pulled
 let popupText = ""; // Blank String for pop up text
 let chestImgOpen, chestImgClose; // Load chest images
 let itemPulled;
-let rarity = [Common, Uncommon, Rare, Epic, Legendary, LMtT]; // TODO proper way to declare these 
-let itemIterator;
+let rarity;
+let itemIndex
+let itemRange;
 let rarityShort;
-//ive got a good feeling i should just initialize rarity as nothing cause i typed it like theyre multiple options but i think its just saying rarity is all of those
 
 // Preloads images
 function preload(){
@@ -104,17 +104,6 @@ function openChest(){
 //   itemCounts[item]++;
 // }
 
-// Pops up (currently) a white square with text for item opened
-function displayPopup(){
-  fill(255);
-  rectMode(CENTER);
-  rect(400, 250, 220, 200);
-  textAlign(CENTER, CENTER);
-  textSize(18);
-  fill(0);
-  text(popupText, width / 2, 255);
-}
-
 // Draw the number of each item pulled on screen
 function drawItemCount(){
   fill(0);
@@ -126,8 +115,20 @@ function drawItemCount(){
   }
 }
 
+// Pops up (currently) a white square with text for item opened
+function displayPopup(){
+  fill(255);
+  rectMode(CENTER);
+  rect(400, 250, 220, 200);
+  textAlign(CENTER, CENTER);
+  textSize(18);
+  fill(0);
+  text(popupText, width / 2, 255);
+}
+
 // Rolls 0-100 to pick rarity, then rolls again within rarity to pick item
-function itemPull(rarity){
+function itemPull(){
+  let rand;
 
   rand = Math.floor(Math.random() * 101); // Random 0-100
   if (rand <= 100 && rand > 55){
@@ -146,43 +147,43 @@ function itemPull(rarity){
 
   // Takes the rarity and rolls for an item in that rarity
   switch(rarity){ 
-    case Common:
+    case 'Common':
       rarityShort = 'c'; // Used to combine with rand for item
-      itemIterator = Math.floor(Math.random() * 10) + 1; // Random [1-10]
-      itemIterator = num.toString(); // Concert rand to string
-      itemPulled = rarity.concat(itemIterator); // Combines rarityShort with rand 1-10
+      itemRange = Math.floor(Math.random() * 10) + 1; // Random [1-10]
+      itemIndex = itemRange.toString(); // Convert rand(itemRange) to string(itemIndex)
+      itemPulled = rarityShort.concat(itemIndex); // Combines rarityShort with rand 1-10
       break;
 
-    case Uncommon:
+    case 'Uncommon':
       rarityShort = 'u';
-      Math.floor(Math.random() * 8) + 1;
-      itemIterator = num.toString();
-      itemPulled = rarity.concat(itemIterator);
+      itemRange = Math.floor(Math.random() * 8) + 1;
+      itemIndex = itemRange.toString();
+      itemPulled = rarityShort.concat(itemIndex);
       break;
 
-    case Rare:
+    case 'Rare':
       rarityShort = 'r';
-      Math.floor(Math.random() * 6) + 1;
-      itemIterator = num.toString();
-      itemPulled = rarity.concat(itemIterator);
+      itemRange = Math.floor(Math.random() * 6) + 1;
+      itemIndex = itemRange.toString();
+      itemPulled = rarityShort.concat(itemIndex);
       break;
 
-    case Epic:
+    case 'Epic':
       rarityShort = 'e';
-      Math.floor(Math.random() * 4) + 1;
-      itemIterator = num.toString();
-      itemPulled = rarity.concat(itemIterator);
+      itemRange = Math.floor(Math.random() * 4) + 1;
+      itemIndex = itemRange.toString();
+      itemPulled = rarityShort.concat(itemIndex);
       break;
 
-    case Legendary:
+    case 'Legendary':
       rarityShort = 'l';
-      Math.floor(Math.random() * 2) + 1;
-      itemIterator = num.toString();
-      itemPulled = rarity.concat(itemIterator);
+      itemRange = Math.floor(Math.random() * 2) + 1;
+      itemIndex = itemRange.toString();
+      itemPulled = rarityShort.concat(itemIndex);
       break;
 
-    case LMtT:
-      itemPulled = l1;
+    case 'LMtT':
+      itemPulled = m1;
       break;
   }
 }
