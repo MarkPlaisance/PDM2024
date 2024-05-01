@@ -8,13 +8,22 @@
 
 
 let chestOpened = false; // Start with chest closed
-let items = ["i1", "i2", "i3", "i4", "i5", "i6", "i7", "i8", "i9", "i10"]; // All items (currently nameless) that can be pulled || Eventually all pngs
-let rarities = [1,2,3,4,5,6,7,8,9,10]; // Rarirty values
+// let itemList = [
+//   c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, // Common
+//   u1, u2, u3, u4, u5, u6, u7, u8, // Uncommon
+//   r1, r2, r3, r4, r5, r6, // Rare
+//   e1, e2, e3, e4, // Epic
+//   l1, l2, // Legendary
+//   m1 // Mike
+// ]; // All items (currently nameless) that can be pulled || Eventually all pngs
 let chestOpenCount = 0; // Amount of chests opens
 let itemCounts = {}; // Number of items pulled
 let popupText = ""; // Blank String for pop up text
 let chestImgOpen, chestImgClose; // Load chest images
-let rarity = ["Common","Uncommon","Rare","Epic", "Lengenary","LMtT"]; //Literally mike the tiger (0.1% chance of pulling) "Holy crap you literally pulled mike the tiger!"
+let itemPulled;
+let rarity = [Common, Uncommon, Rare, Epic, Legendary, LMtT]; // TODO proper way to declare these 
+let itemIterator;
+let rarityShort;
 //ive got a good feeling i should just initialize rarity as nothing cause i typed it like theyre multiple options but i think its just saying rarity is all of those
 
 // Preloads images
@@ -26,7 +35,7 @@ function preload(){
 // Sets up canvas and initializeItemCounts
 function setup() {
   createCanvas(800, 600);
-  initializeItemCounts();
+  //initializeItemCounts();
 }
 
 // Draws everything, calls functions for drawn elements
@@ -61,7 +70,7 @@ function drawCounter(){
 function mousePressed(){
   if (!chestOpened && mouseX > width / 2 - 50 && mouseX < width / 2 + 50 && mouseY > 500 - 100 && mouseY < 500 + 100){
     openChest();
-    updateItemCounts();
+    //updateItemCounts();
     console.log("Chest Opened"); // Log to console for debugging
   } else {
     chestOpened = false;
@@ -71,29 +80,29 @@ function mousePressed(){
 // TODO Most of this function outdated and needs to call itemPull instead of rolling for the item itself
 function openChest(){
   chestOpened = true;
-  let randomIndex = floor(random(items.length));
-  let item = items[randomIndex];
-  let rarity = rarities[randomIndex];
-  console.log("You got: ", item, " with rarity: ", rarity); // Log to console for debugging
-  popupText = ("You got: " + item + " with rarity: " + rarity + "\nClick to Continue");
+  itemPull();
+
+
+  console.log("You got: ", itemPulled, " with rarity: ", rarity); // Log to console for debugging
+  popupText = ("You got: " + itemPulled + " with rarity: " + rarity + "\nClick to Continue");
   chestOpenCount++;
   displayPopup();
 }
 
 // TODO fix how these work
-function initializeItemCounts(){
-  for (let i = 0; i < items.length; i++){
-    itemCounts[items[i]] = 0;
-  }
-}
+// function initializeItemCounts(){
+//   for (let i = 0; i < items.length; i++){
+//     itemCounts[items[i]] = 0;
+//   }
+// }
 
 // TODO fix this so it properly counts item opened this
 // This could most likely be an extension of itemPull to know where to ++
-function updateItemCounts(){
-  let randomIndex = floor(random(items.length));
-  let item = items[randomIndex]; // I feel like this shouldnt be random
-  itemCounts[item]++;
-}
+// function updateItemCounts(){
+//   let randomIndex = floor(random(items.length));
+//   let item = items[randomIndex]; // I feel like this shouldnt be random
+//   itemCounts[item]++;
+// }
 
 // Pops up (currently) a white square with text for item opened
 function displayPopup(){
@@ -118,7 +127,7 @@ function drawItemCount(){
 }
 
 // Rolls 0-100 to pick rarity, then rolls again within rarity to pick item
-function itemPull(){
+function itemPull(rarity){
 
   rand = Math.floor(Math.random() * 101); // Random 0-100
   if (rand <= 100 && rand > 55){
@@ -138,22 +147,42 @@ function itemPull(){
   // Takes the rarity and rolls for an item in that rarity
   switch(rarity){ 
     case Common:
-      //Random number to pick item
+      rarityShort = 'c'; // Used to combine with rand for item
+      itemIterator = Math.floor(Math.random() * 10) + 1; // Random [1-10]
+      itemIterator = num.toString(); // Concert rand to string
+      itemPulled = rarity.concat(itemIterator); // Combines rarityShort with rand 1-10
       break;
+
     case Uncommon:
-      //RANDOM
+      rarityShort = 'u';
+      Math.floor(Math.random() * 8) + 1;
+      itemIterator = num.toString();
+      itemPulled = rarity.concat(itemIterator);
       break;
+
     case Rare:
-      //RANDOM
+      rarityShort = 'r';
+      Math.floor(Math.random() * 6) + 1;
+      itemIterator = num.toString();
+      itemPulled = rarity.concat(itemIterator);
       break;
+
     case Epic:
-      //RANDOM
+      rarityShort = 'e';
+      Math.floor(Math.random() * 4) + 1;
+      itemIterator = num.toString();
+      itemPulled = rarity.concat(itemIterator);
       break;
+
     case Legendary:
-      //RANDOM
+      rarityShort = 'l';
+      Math.floor(Math.random() * 2) + 1;
+      itemIterator = num.toString();
+      itemPulled = rarity.concat(itemIterator);
       break;
+
     case LMtT:
-      //MIKE
+      itemPulled = l1;
       break;
   }
 }
