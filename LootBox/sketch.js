@@ -14,7 +14,7 @@ let rarity;
 
 const itemMap = {
   // Map of all items TODO change each right element to image
-  'c1': { name: 'Common 1', image: "https://upload.wikimedia.org/wikipedia/commons/5/51/Mike_VI_the_Tiger_%28Louisiana_State_University_mascot%29.jpg"},
+  'c1': { name: 'Common 1', image: 'assets/chestClose.pmg'},
   'c2': 'Common 2',
   'c3': 'Common 3',
   'c4': 'Common 4',
@@ -102,15 +102,11 @@ function mousePressed(){
 function openChest(){
   chestOpened = true;
   itemPull();
-  const itemName = getItemName(itemPulled)
-  getItemName(itemPulled);
-  console.log("Pulled Item:", itemName); // Log to console for debugging
 
   console.log("You got: ", itemPulled, " with rarity: ", rarity); // Log to console for debugging
   popupText = ("You got: " + itemPulled + " with rarity: " + rarity + "\nClick to Continue");
   chestOpenCount++;
   displayPopup();
-  displayItemImage();
 }
 
 // TODO fix how these work
@@ -150,13 +146,7 @@ function displayPopup(){
   text(popupText, width / 2, 255);
 }
 
-function displayItemImage(itemString){
-  item = itemMap[itemString];
-  let imageLocation = item.image;
-  loadImage(imageLocation, img => {
-    image(img, 10, 10);
-  });
-}
+
 
 // Rolls 0-100 to pick rarity, then rolls again within rarity to pick item
 function itemPull(){
@@ -221,8 +211,4 @@ function itemPull(){
       itemPulled = 'm1';
       break;
   }
-}
-
-function getItemName(itemString){
-  return itemMap[itemString]
 }
