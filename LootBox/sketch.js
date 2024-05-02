@@ -11,46 +11,53 @@ let popupText = ""; // Blank String for pop up text
 let chestImgOpen, chestImgClose; // Load chest images
 let itemPulled;
 let rarity;
+let itemImages = {};
+let itemPulledPicture;
 
 const itemMap = {
   // Map of all items TODO change each right element to image
-  'c1': { name: 'Common 1', image: 'assets/chestClose.pmg'},
-  'c2': 'Common 2',
-  'c3': 'Common 3',
-  'c4': 'Common 4',
-  'c5': 'Common 5',
-  'c6': 'Common 6',
-  'c7': 'Common 7',
-  'c8': 'Common 8',
-  'c9': 'Common 9',
-  'c10': 'Common 10',
-  'u1': 'Uncommon 1',
-  'u2': 'Uncommon 2',
-  'u3': 'Uncommon 3',
-  'u4': 'Uncommon 4',
-  'u5': 'Uncommon 5',
-  'u6': 'Uncommon 6',
-  'u7': 'Uncommon 7',
-  'u8': 'Uncommon 8',
-  'r1': 'Rare 1',
-  'r2': 'Rare 2',
-  'r3': 'Rare 3',
-  'r4': 'Rare 4',
-  'r5': 'Rare 5',
-  'r6': 'Rare 6',
-  'e1': 'Epic 1',
-  'e2': 'Epic 2',
-  'e3': 'Epic 3',
-  'e4': 'Epic 4',
-  'l1': 'Legendary 1',
-  'l2': 'Legendary 2',
-  'm1': 'LMtT'
+  'c1': { name: 'Common 1', image: 'assets/chestClose.png'},
+  'c2': { name: 'Common 2', image: 'assets/chestClose.png'},
+  'c3': { name: 'Common 3', image: 'assets/chestClose.png'},
+  'c4': { name: 'Common 4', image: 'assets/chestClose.png'},
+  'c5': { name: 'Common 5', image: 'assets/chestClose.png'},
+  'c6': { name: 'Common 6', image: 'assets/chestClose.png'},
+  'c7': { name: 'Common 7', image: 'assets/chestClose.png'},
+  'c8': { name: 'Common 8', image: 'assets/chestClose.png'},
+  'c9': { name: 'Common 9', image: 'assets/chestClose.png'},
+  'c10':{ name: 'Common 10',image: 'assets/chestClose.png'},
+  'u1': { name: 'Uncommon 1', image: 'assets/chestClose.png'},
+  'u2': { name: 'Uncommon 2', image: 'assets/chestClose.png'},
+  'u3': { name: 'Uncommon 3', image: 'assets/chestClose.png'},
+  'u4': { name: 'Uncommon 4', image: 'assets/chestClose.png'},
+  'u5': { name: 'Uncommon 5', image: 'assets/chestClose.png'},
+  'u6': { name: 'Uncommon 6', image: 'assets/chestClose.png'},
+  'u7': { name: 'Uncommon 7', image: 'assets/chestClose.png'},
+  'u8': { name: 'Uncommon 8', image: 'assets/chestClose.png'},
+  'r1': { name: 'Rare 1', image: 'assets/chestClose.png'},
+  'r2': { name: 'Rare 2', image: 'assets/chestClose.png'},
+  'r3': { name: 'Rare 3', image: 'assets/chestClose.png'},
+  'r4': { name: 'Rare 4', image: 'assets/chestClose.png'},
+  'r5': { name: 'Rare 5', image: 'assets/chestClose.png'},
+  'r6': { name: 'Rare 6', image: 'assets/chestClose.png'},
+  'e1': { name: 'Epic 1', image: 'assets/chestClose.png'},
+  'e2': { name: 'Epic 2', image: 'assets/chestClose.png'},
+  'e3': { name: 'Epic 3', image: 'assets/chestClose.png'},
+  'e4': { name: 'Epic 4', image: 'assets/chestClose.png'},
+  'l1': { name: 'Legendary 1', image: 'assets/chestClose.png'},
+  'l2': { name: 'Legendary 2', image: 'assets/chestClose.png'},
+  'm1': { name: 'LMtT', image: 'assets/mike.jpg_large'}
 }
 
 // Preloads images
 function preload(){
   chestImgOpen = loadImage('assets/chestClose.png');
   chestImgClose = loadImage('assets/chestOpen.png');
+
+  loadImage('assets/mike.jpg_large');
+  // for (let key in itemMap){ // Loads all item images
+  //   itemImages[key] = loadImage(itemMap[key].image);
+  // }
 }
 
 // Sets up canvas and initializeItemCounts
@@ -144,6 +151,7 @@ function displayPopup(){
   textSize(18);
   fill(0);
   text(popupText, width / 2, 255);
+  //image(itemPulledPicture, 10, 10, 100, 100);
 }
 
 
@@ -211,4 +219,11 @@ function itemPull(){
       itemPulled = 'm1';
       break;
   }
+ // getItemPicture(itemPulled);
 }
+
+//Theres a line in here breaking it
+//THIS SHIT DONT WORK RIGHT
+// function getItemPicture(itemPulled){
+//   itemPulledPicture = image(itemMap[itemPulled]);
+// }
