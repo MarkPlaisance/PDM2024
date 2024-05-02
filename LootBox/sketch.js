@@ -12,7 +12,7 @@ let chestImgOpen, chestImgClose; // Load chest images
 let itemPulled;
 let rarity;
 let itemImages = {};
-//let itemPulledPicture;
+let itemPulledPicture;
 
 const itemMap = {
   // Map of all items TODO change each right element to image
