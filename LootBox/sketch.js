@@ -1,15 +1,14 @@
 /* TODO
   Software:
     Select, import item pictures 
-    Maybe put short delay between open attempts
-    Update popupText to print name of item instead of just 'c1'
+    Maybe put short delay between open attempt so sound effects have time to play
   Music:
     Box opening sound effect (extremely short)
     Sound effect for each item rarity
     Background music
   Arduino:
-    Button to open chest OR joystick as a mouse replacement
-    Light when opening OR rbg light indicating rarity
+    Button to open chest (AND??) joystick as a mouse replacement
+    Light when opening OR rbg light indicating rarity (Should be able to use rarityColor for RBG LED)
 */
 
 let chestOpened = false;
@@ -121,7 +120,8 @@ function openChest(){
   chestOpened = true;
   chestOpenCount++;
   itemPull();
-  popupText = ("You got: " + itemPulled + " with rarity: " + rarity + "\nClick to Continue");
+  popupText = ("You got: " + itemMap[itemPulled].name + " with rarity: " + rarity + "\nClick to Continue");
+
   displayPopup();
 }
 
@@ -185,7 +185,8 @@ function itemPull(){
       itemRange = Math.floor(Math.random() * 10) + 1; // Random [1-10]
       itemIndex = itemRange.toString(); // Convert rand(itemRange) to string(itemIndex)
       itemPulled = rarityShort.concat(itemIndex); // Combines rarityShort with rand 1-10
-      rarityColor = '#EBEBEB'; // I dont know if storing the hex as a string works but we'll try
+      rarityColor = '#EBEBEB';
+      // TODO Implement a "play sound effect" here based off rarity quality
       break;
 
     case 'Uncommon':
@@ -194,6 +195,7 @@ function itemPull(){
       itemIndex = itemRange.toString();
       itemPulled = rarityShort.concat(itemIndex);
       rarityColor = '#44D5FF';
+      // TODO Implement a "play sound effect" here based off rarity quality
       break;
 
     case 'Rare':
@@ -202,6 +204,7 @@ function itemPull(){
       itemIndex = itemRange.toString();
       itemPulled = rarityShort.concat(itemIndex);
       rarityColor = '#C90000';
+      // TODO Implement a "play sound effect" here based off rarity quality
       break;
 
     case 'Epic':
@@ -210,6 +213,7 @@ function itemPull(){
       itemIndex = itemRange.toString();
       itemPulled = rarityShort.concat(itemIndex);
       rarityColor = '#BF00EE';
+      // TODO Implement a "play sound effect" here based off rarity quality
       break;
 
     case 'Legendary':
@@ -218,11 +222,13 @@ function itemPull(){
       itemIndex = itemRange.toString();
       itemPulled = rarityShort.concat(itemIndex);
       rarityColor = '#FFC127';
+      // TODO Implement a "play sound effect" here based off rarity quality
       break;
 
     case 'LMtT':
       itemPulled = 'm1';
-      rarityColor = '#FDD023'
+      rarityColor = '#FDD023';
+      // TODO Implement a "play sound effect" here based off rarity quality (Tiger Rag!!)
       break;
   }
   itemPulledImage = itemImages[itemPulled];
