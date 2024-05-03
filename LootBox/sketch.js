@@ -6,7 +6,7 @@
   Music:
     Box opening sound effect (extremely short)
     Sound effect for each item rarity
-    Background music ()
+    Background music
   Arduino:
     Button to open chest OR joystick as a mouse replacement
     Light when opening OR rbg light indicating rarity
