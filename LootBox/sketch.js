@@ -43,7 +43,7 @@ const itemMap = {
 
   'r1': { name: "Mike's Habitat", image: 'assets/mikeHabitat.jpg'},
   'r2': { name: 'LSU Tiger Band', image: 'assets/tigerband.webp'},
-  'r3': { name: '2019 LSU Football', image: 'assets/2019lsuFootball.jpg'},
+  'r3': { name: '2019 LSU Football', image: 'assets/2019lsuFootball.jpg'}, //test
   'r4': { name: 'PFT Panera Bread', image: 'assets/pftPanera.webp'},
   'r5': { name: 'Dylan Crews', image: 'assets/dylanCrews.webp'},
   'r6': { name: 'Mascot Mike', image: 'assets/mikeMascot.jpg'},
