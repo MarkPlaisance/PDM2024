@@ -22,37 +22,42 @@ let itemPulledImage;
 let itemCounts = {};
 let rarityColor;
 const itemMap = {
-  'c1': { name: 'Common 1', image: 'assets/chestClose.png'},
-  'c2': { name: 'Common 2', image: 'assets/chestClose.png'},
-  'c3': { name: 'Common 3', image: 'assets/chestClose.png'},
-  'c4': { name: 'Common 4', image: 'assets/chestClose.png'},
-  'c5': { name: 'Common 5', image: 'assets/chestClose.png'},
-  'c6': { name: 'Common 6', image: 'assets/chestClose.png'},
-  'c7': { name: 'Common 7', image: 'assets/chestClose.png'},
-  'c8': { name: 'Common 8', image: 'assets/chestClose.png'},
-  'c9': { name: 'Common 9', image: 'assets/chestClose.png'},
-  'c10':{ name: 'Common 10',image: 'assets/chestClose.png'},
-  'u1': { name: 'Uncommon 1', image: 'assets/chestClose.png'},
-  'u2': { name: 'Uncommon 2', image: 'assets/chestClose.png'},
-  'u3': { name: 'Uncommon 3', image: 'assets/chestClose.png'},
-  'u4': { name: 'Uncommon 4', image: 'assets/chestClose.png'},
-  'u5': { name: 'Uncommon 5', image: 'assets/chestClose.png'},
-  'u6': { name: 'Uncommon 6', image: 'assets/chestClose.png'},
-  'u7': { name: 'Uncommon 7', image: 'assets/chestClose.png'},
-  'u8': { name: 'Uncommon 8', image: 'assets/chestClose.png'},
-  'r1': { name: 'Rare 1', image: 'assets/chestClose.png'},
-  'r2': { name: 'Rare 2', image: 'assets/chestClose.png'},
-  'r3': { name: 'Rare 3', image: 'assets/chestClose.png'},
-  'r4': { name: 'Rare 4', image: 'assets/chestClose.png'},
-  'r5': { name: 'Rare 5', image: 'assets/chestClose.png'},
-  'r6': { name: 'Rare 6', image: 'assets/chestClose.png'},
-  'e1': { name: 'Epic 1', image: 'assets/chestClose.png'},
-  'e2': { name: 'Epic 2', image: 'assets/chestClose.png'},
-  'e3': { name: 'Epic 3', image: 'assets/chestClose.png'},
-  'e4': { name: 'Epic 4', image: 'assets/chestClose.png'},
-  'l1': { name: 'Legendary 1', image: 'assets/chestClose.png'},
-  'l2': { name: 'Legendary 2', image: 'assets/chestClose.png'},
-  'm1': { name: 'LMtT', image: 'assets/mike.jpg_large'}
+  'c1': { name: 'Common 1', image: 'assets/chestClose.png'}, // Locket Basement
+  'c2': { name: 'Common 2', image: 'assets/chestClose.png'}, // Herget Hall
+  'c3': { name: 'Common 3', image: 'assets/chestClose.png'}, // Leaky PFT
+  'c4': { name: 'Common 4', image: 'assets/chestClose.png'}, // Library w/ tarps
+  'c5': { name: 'Common 5', image: 'assets/chestClose.png'}, // Oaks trees
+  'c6': { name: 'Common 6', image: 'assets/chestClose.png'}, // t-33 fighter jet
+  'c7': { name: 'Common 7', image: 'assets/chestClose.png'}, // never ending construction
+  'c8': { name: 'Common 8', image: 'assets/chestClose.png'}, // tigerland
+  'c9': { name: 'Common 9', image: 'assets/chestClose.png'}, // Himes
+  'c10':{ name: 'Common 10',image: 'assets/chestClose.png'}, // Mounds
+
+  'u1': { name: 'Uncommon 1', image: 'assets/chestClose.png'}, // Football locker room
+  'u2': { name: 'Uncommon 2', image: 'assets/chestClose.png'}, // Enchanted Forest
+  'u3': { name: 'Uncommon 3', image: 'assets/chestClose.png'}, // Pregame
+  'u4': { name: 'Uncommon 4', image: 'assets/chestClose.png'}, // Canes 1
+  'u5': { name: 'Uncommon 5', image: 'assets/chestClose.png'}, // Japanese magnolias
+  'u6': { name: 'Uncommon 6', image: 'assets/chestClose.png'}, // Memorial Tower
+  'u7': { name: 'Uncommon 7', image: 'assets/chestClose.png'}, // Azalea Camelia dorms
+  'u8': { name: 'Uncommon 8', image: 'assets/chestClose.png'}, // Brian Kelly
+
+  'r1': { name: 'Rare 1', image: 'assets/chestClose.png'}, // Mike's Habitat
+  'r2': { name: 'Rare 2', image: 'assets/chestClose.png'}, // Tiger Band
+  'r3': { name: 'Rare 3', image: 'assets/chestClose.png'}, // 2019 Football team
+  'r4': { name: 'Rare 4', image: 'assets/chestClose.png'}, // PFT Panera
+  'r5': { name: 'Rare 5', image: 'assets/chestClose.png'}, // Dylan Crews
+  'r6': { name: 'Rare 6', image: 'assets/chestClose.png'}, // Mike Mascot
+  
+  'e1': { name: 'Epic 1', image: 'assets/chestClose.png'}, // JD5
+  'e2': { name: 'Epic 2', image: 'assets/chestClose.png'}, // Paul Skeenes
+  'e3': { name: 'Epic 3', image: 'assets/chestClose.png'}, // Womens Baketball team
+  'e4': { name: 'Epic 4', image: 'assets/chestClose.png'}, // Gymnastics Team
+
+  'l1': { name: 'Legendary 1', image: 'assets/chestClose.png'}, // Death Valley
+  'l2': { name: 'Legendary 2', image: 'assets/chestClose.png'}, // Joe Burrow
+
+  'm1': { name: 'LMtT', image: 'assets/mike.jpg_large'}  // Mike the Tier
 }
 for (let key in itemMap){
   itemCounts[key] = 0;
