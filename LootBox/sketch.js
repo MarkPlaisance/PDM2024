@@ -1,6 +1,5 @@
 /* TODO
   Software:
-    Select, import item pictures 
     Maybe put short delay between open attempt so sound effects have time to play
   Music:
     Box opening sound effect (extremely short)
@@ -22,42 +21,42 @@ let itemPulledImage;
 let itemCounts = {};
 let rarityColor;
 const itemMap = {
-  'c1': { name: 'Common 1', image: 'assets/chestClose.png'}, // Locket Basement
-  'c2': { name: 'Common 2', image: 'assets/chestClose.png'}, // Herget Hall
-  'c3': { name: 'Common 3', image: 'assets/chestClose.png'}, // Leaky PFT
-  'c4': { name: 'Common 4', image: 'assets/chestClose.png'}, // Library w/ tarps
-  'c5': { name: 'Common 5', image: 'assets/chestClose.png'}, // Oaks trees
-  'c6': { name: 'Common 6', image: 'assets/chestClose.png'}, // t-33 fighter jet
-  'c7': { name: 'Common 7', image: 'assets/chestClose.png'}, // never ending construction
-  'c8': { name: 'Common 8', image: 'assets/chestClose.png'}, // tigerland
-  'c9': { name: 'Common 9', image: 'assets/chestClose.png'}, // Himes
-  'c10':{ name: 'Common 10',image: 'assets/chestClose.png'}, // Mounds
+  'c1': { name: 'The Lockett Basement', image: 'assets/locketBasement.jpg'},
+  'c2': { name: 'Herget Hall', image: 'assets/hergetHall.webp'},
+  'c3': { name: 'Leaky Patrick F. Taylor', image: 'assets/leakyPFT.webp'},
+  'c4': { name: 'LSU Library', image: 'assets/lsuLibrary.jpg'},
+  'c5': { name: 'Stately Oaks', image: 'assets/statelyOaks.jpg'},
+  'c6': { name: 'T-33 Jet', image: 'assets/t33Jet.jpg'},
+  'c7': { name: 'Never Ending Construction', image: 'assets/construction.jpg'},
+  'c8': { name: 'Tigerland', image: 'assets/tigerland.jpg'},
+  'c9': { name: 'Himes Hall', image: 'assets/himesHall.jpg'},
+  'c10':{ name: 'Electric Scooter',image: 'assets/electricScooter.jpg'},
 
-  'u1': { name: 'Uncommon 1', image: 'assets/chestClose.png'}, // Football locker room
-  'u2': { name: 'Uncommon 2', image: 'assets/chestClose.png'}, // Enchanted Forest
-  'u3': { name: 'Uncommon 3', image: 'assets/chestClose.png'}, // Pregame
-  'u4': { name: 'Uncommon 4', image: 'assets/chestClose.png'}, // Canes 1
-  'u5': { name: 'Uncommon 5', image: 'assets/chestClose.png'}, // Japanese magnolias
-  'u6': { name: 'Uncommon 6', image: 'assets/chestClose.png'}, // Memorial Tower
-  'u7': { name: 'Uncommon 7', image: 'assets/chestClose.png'}, // Azalea Camelia dorms
-  'u8': { name: 'Uncommon 8', image: 'assets/chestClose.png'}, // Brian Kelly
+  'u1': { name: 'Football Locker Room', image: 'assets/footballLockerRooms.webp'},
+  'u2': { name: 'Enchanted Forest', image: 'assets/enchantedForest.jpg'},
+  'u3': { name: 'Pregame!', image: 'assets/pregame.jpg'},
+  'u4': { name: "Rasing Cane's", image: 'assets/canes.jpg'},
+  'u5': { name: 'Japanese Magnolias', image: 'assets/japaneseMagnolias.jpg'},
+  'u6': { name: 'Memorial Towers', image: 'assets/memorialTower.jpg'},
+  'u7': { name: 'Azalea & Camellia Halls', image: 'assets/azaleaCameliaHalls.jpg'},
+  'u8': { name: 'Brian Kelly', image: 'assets/brianKelly.webp'},
 
-  'r1': { name: 'Rare 1', image: 'assets/chestClose.png'}, // Mike's Habitat
-  'r2': { name: 'Rare 2', image: 'assets/chestClose.png'}, // Tiger Band
-  'r3': { name: 'Rare 3', image: 'assets/chestClose.png'}, // 2019 Football team
-  'r4': { name: 'Rare 4', image: 'assets/chestClose.png'}, // PFT Panera
-  'r5': { name: 'Rare 5', image: 'assets/chestClose.png'}, // Dylan Crews
-  'r6': { name: 'Rare 6', image: 'assets/chestClose.png'}, // Mike Mascot
+  'r1': { name: "Mike's Habitat", image: 'assets/mikeHabitat.jpg'},
+  'r2': { name: 'LSU Tiger Band', image: 'assets/tigerband.webp'},
+  'r3': { name: '2019 LSU Football', image: 'assets/2019lsuFootball.jpg'},
+  'r4': { name: 'PFT Panera Bread', image: 'assets/pftPanera.webp'},
+  'r5': { name: 'Dylan Crews', image: 'assets/dylanCrews.webp'},
+  'r6': { name: 'Mascot Mike', image: 'assets/mikeMascot.jpg'},
   
-  'e1': { name: 'Epic 1', image: 'assets/chestClose.png'}, // JD5
-  'e2': { name: 'Epic 2', image: 'assets/chestClose.png'}, // Paul Skeenes
-  'e3': { name: 'Epic 3', image: 'assets/chestClose.png'}, // Womens Baketball team
-  'e4': { name: 'Epic 4', image: 'assets/chestClose.png'}, // Gymnastics Team
+  'e1': { name: 'Jayden Daniels', image: 'assets/jaydenDaniels.jpg'},
+  'e2': { name: 'Paul Skenes', image: 'assets/paulSkenes.jpg'},
+  'e3': { name: 'Womens Basketball', image: 'assets/womensBasketball.jpg'},
+  'e4': { name: 'LSU Gymnastics', image: 'assets/gymnastics.avif'},
 
-  'l1': { name: 'Legendary 1', image: 'assets/chestClose.png'}, // Death Valley
-  'l2': { name: 'Legendary 2', image: 'assets/chestClose.png'}, // Joe Burrow
+  'l1': { name: 'THE GOAT', image: 'assets/joeBurrow.jpg'},
+  'l2': { name: 'Death Valley', image: 'assets/tigerStadium.jpg'},
 
-  'm1': { name: 'LMtT', image: 'assets/mike.jpg_large'}  // Mike the Tier
+  'm1': { name: 'Mike The Tiger!!', image: 'assets/mike.jpg_large'}
 }
 for (let key in itemMap){
   itemCounts[key] = 0;
@@ -125,7 +124,7 @@ function openChest(){
   chestOpened = true;
   chestOpenCount++;
   itemPull();
-  popupText = ("You got: " + itemMap[itemPulled].name + " with rarity: " + rarity + "\nClick to Continue");
+  popupText = ("You got: " + itemMap[itemPulled].name + "\nRarity: " + rarity + "\nClick to Continue");
 
   displayPopup();
 }
@@ -146,7 +145,7 @@ function drawItemCounts(){
 
 // Draws the picture for the pulled item
 function drawItem(itemPulledImage){
-  image(itemPulledImage, 300, 150, 200, 200);
+  image(itemPulledImage, 265, 150, 270, 200);
 }
 
 // Draws a colored rectangle corresponding to itemPulled rarity and popupText for itemPulled description
@@ -154,7 +153,7 @@ function displayPopup(){
   fill(rarityColor);
   strokeWeight(4);
   rectMode(CENTER);
-  rect(400, 250, 260, 220);
+  rect(400, 250, 285, 220);
   textAlign(CENTER, CENTER);
   textSize(25);
   fill(0);
