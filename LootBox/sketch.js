@@ -1,21 +1,28 @@
 /* TODO
-  Select, import, and implement item pictures.
-  Music: Box opening sound effect, sound effect for each item rarity, background music 
-  Arduino input and output: button to open it, light when opening or rbg light indicating rarity
+  Software:
+    Select, import item pictures 
+    Maybe put short delay between open attempts
+    Update popupText to print name of item instead of just 'c1'
+  Music:
+    Box opening sound effect (extremely short)
+    Sound effect for each item rarity
+    Background music ()
+  Arduino:
+    Button to open chest OR joystick as a mouse replacement
+    Light when opening OR rbg light indicating rarity
 */
 
-let chestOpened = false; // Start with chest closed
-let chestOpenCount = 0; // Amount of chests opens
-// let itemCounts = {}; // Number of items pulled
-let popupText = ""; // Blank String for pop up text
-let chestImgOpen, chestImgClose; // Load chest images
+let chestOpened = false;
+let chestOpenCount = 0;
+let popupText = "";
+let chestImgOpen, chestImgClose;
 let itemPulled;
 let rarity;
 let itemImages = {};
-let itemPulledPicture;
-
+let itemPulledImage;
+let itemCounts = {};
+let rarityColor;
 const itemMap = {
-  // Map of all items TODO change each right element to image
   'c1': { name: 'Common 1', image: 'assets/chestClose.png'},
   'c2': { name: 'Common 2', image: 'assets/chestClose.png'},
   'c3': { name: 'Common 3', image: 'assets/chestClose.png'},
@@ -48,33 +55,38 @@ const itemMap = {
   'l2': { name: 'Legendary 2', image: 'assets/chestClose.png'},
   'm1': { name: 'LMtT', image: 'assets/mike.jpg_large'}
 }
+for (let key in itemMap){
+  itemCounts[key] = 0;
+}
 
 // Preloads images
 function preload(){
   chestImgOpen = loadImage('assets/chestClose.png');
   chestImgClose = loadImage('assets/chestOpen.png');
 
+  loadImage('assets/chestClose.png')
   loadImage('assets/mike.jpg_large');
-  // for (let key in itemMap){ // Loads all item images
-  //   itemImages[key] = loadImage(itemMap[key].image);
-  // }
+  
+  for (let key in itemMap){ // Iterates through itemMap and loads all item images
+    itemImages[key] = loadImage(itemMap[key].image);
+  }
 }
 
-// Sets up canvas and initializeItemCounts
+// Sets up canvas
 function setup() {
-  createCanvas(800, 600);
-  //initializeItemCounts();
+  createCanvas(800, 635);
 }
 
 // Draws everything, calls functions for drawn elements
 function draw() {
   background(220);
   drawChest();
-  drawCounter();
-  //drawItemCount();
+  drawChestCounter();
+  drawItemCounts()
 
   if (chestOpened){
     displayPopup();
+    drawItem(itemPulledImage);
   }
 }
 
@@ -88,73 +100,61 @@ function drawChest(){
 }
 
 // Draws the counter of chests opened
-function drawCounter(){
+function drawChestCounter(){
   fill(0);
   textSize(18);
-  text("Chest Opened: " + chestOpenCount, 100, 22);
+  textAlign(LEFT, TOP);
+  text("Chest Opened: " + chestOpenCount, 10, 10);
 }
 
 // Handles pressing the mouse over area drawn over chest
 function mousePressed(){
   if (!chestOpened && mouseX > width / 2 - 50 && mouseX < width / 2 + 50 && mouseY > 500 - 100 && mouseY < 500 + 100){
     openChest();
-    //updateItemCounts();
-    console.log("Chest Opened"); // Log to console for debugging
   } else {
     chestOpened = false;
   }
 }
 
-// TODO Most of this function outdated and needs to call itemPull instead of rolling for the item itself
+// Handles actions when chest opened, calls itemPull, displayPopup, increments chestOpenCount
 function openChest(){
   chestOpened = true;
-  itemPull();
-
-  console.log("You got: ", itemPulled, " with rarity: ", rarity); // Log to console for debugging
-  popupText = ("You got: " + itemPulled + " with rarity: " + rarity + "\nClick to Continue");
   chestOpenCount++;
+  itemPull();
+  popupText = ("You got: " + itemPulled + " with rarity: " + rarity + "\nClick to Continue");
   displayPopup();
 }
 
-// TODO fix how these work
-// function initializeItemCounts(){
-//   for (let i = 0; i < items.length; i++){
-//     itemCounts[items[i]] = 0;
-//   }
-// }
-
-// TODO fix this so it properly counts item opened this
-// This could most likely be an extension of itemPull to know where to ++
-// function updateItemCounts(){
-//   let randomIndex = floor(random(items.length));
-//   let item = items[randomIndex]; // I feel like this shouldnt be random
-//   itemCounts[item]++;
-// }
-
-// Draw the number of each item pulled on screen
-// function drawItemCount(){
-//   fill(0);
-//   textSize(18);
-//   let yPos = 22;
-//   for (let item in itemCounts){
-//     text("You Have " + itemCounts[item] + " " + item, 700, yPos);
-//     yPos += 20;
-//   }
-// }
-
-// Pops up (currently) a white square with text for item opened
-function displayPopup(){
-  fill(255);
-  rectMode(CENTER);
-  rect(400, 250, 220, 200);
-  textAlign(CENTER, CENTER);
-  textSize(18);
+// Draws a list of every item and how many of each have been pulled
+function drawItemCounts(){
   fill(0);
-  text(popupText, width / 2, 255);
-  //image(itemPulledPicture, 10, 10, 100, 100);
+  textSize(18);
+  textAlign(RIGHT, TOP);
+
+  let yPos = 10;
+  for (let key in itemCounts){
+    let displayText = itemMap[key].name + ": " + itemCounts[key];
+    text(displayText, width - 10, yPos);
+    yPos += 20;
+  }
 }
 
+// Draws the picture for the pulled item
+function drawItem(itemPulledImage){
+  image(itemPulledImage, 300, 150, 200, 200);
+}
 
+// Draws a colored rectangle corresponding to itemPulled rarity and popupText for itemPulled description
+function displayPopup(){
+  fill(rarityColor);
+  strokeWeight(4);
+  rectMode(CENTER);
+  rect(400, 250, 260, 220);
+  textAlign(CENTER, CENTER);
+  textSize(25);
+  fill(0);
+  text(popupText, width / 2, 60);
+}
 
 // Rolls 0-100 to pick rarity, then rolls again within rarity to pick item
 function itemPull(){
@@ -185,6 +185,7 @@ function itemPull(){
       itemRange = Math.floor(Math.random() * 10) + 1; // Random [1-10]
       itemIndex = itemRange.toString(); // Convert rand(itemRange) to string(itemIndex)
       itemPulled = rarityShort.concat(itemIndex); // Combines rarityShort with rand 1-10
+      rarityColor = '#EBEBEB'; // I dont know if storing the hex as a string works but we'll try
       break;
 
     case 'Uncommon':
@@ -192,6 +193,7 @@ function itemPull(){
       itemRange = Math.floor(Math.random() * 8) + 1;
       itemIndex = itemRange.toString();
       itemPulled = rarityShort.concat(itemIndex);
+      rarityColor = '#44D5FF';
       break;
 
     case 'Rare':
@@ -199,6 +201,7 @@ function itemPull(){
       itemRange = Math.floor(Math.random() * 6) + 1;
       itemIndex = itemRange.toString();
       itemPulled = rarityShort.concat(itemIndex);
+      rarityColor = '#C90000';
       break;
 
     case 'Epic':
@@ -206,6 +209,7 @@ function itemPull(){
       itemRange = Math.floor(Math.random() * 4) + 1;
       itemIndex = itemRange.toString();
       itemPulled = rarityShort.concat(itemIndex);
+      rarityColor = '#BF00EE';
       break;
 
     case 'Legendary':
@@ -213,17 +217,14 @@ function itemPull(){
       itemRange = Math.floor(Math.random() * 2) + 1;
       itemIndex = itemRange.toString();
       itemPulled = rarityShort.concat(itemIndex);
+      rarityColor = '#FFC127';
       break;
 
     case 'LMtT':
       itemPulled = 'm1';
+      rarityColor = '#FDD023'
       break;
   }
- // getItemPicture(itemPulled);
+  itemPulledImage = itemImages[itemPulled];
+  itemCounts[itemPulled]++
 }
-
-//Theres a line in here breaking it
-//THIS SHIT DONT WORK RIGHT
-// function getItemPicture(itemPulled){
-//   itemPulledPicture = image(itemMap[itemPulled]);
-// }
