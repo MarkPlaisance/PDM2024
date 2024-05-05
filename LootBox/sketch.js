@@ -39,7 +39,7 @@ const itemMap = {
   'u4': { name: "Rasing Cane's", image: 'assets/canes.jpg'},
   'u5': { name: 'Japanese Magnolias', image: 'assets/japaneseMagnolias.jpg'},
   'u6': { name: 'Memorial Towers', image: 'assets/memorialTower.jpg'},
-  'u7': { name: 'Azalea & Camellia Halls', image: 'assets/azaleaCameliaHalls.jpg'},
+  'u7': { name: 'Azalea & Camellia Hall', image: 'assets/azaleaCameliaHalls.jpg'},
   'u8': { name: 'Brian Kelly', image: 'assets/brianKelly.webp'},
 
   'r1': { name: "Mike's Habitat", image: 'assets/mikeHabitat.jpg'},
@@ -78,15 +78,15 @@ function preload(){
 
 // Sets up canvas
 function setup() {
-  createCanvas(800, 635);
+  createCanvas(900, 635);
 }
 
 // Draws everything, calls functions for drawn elements
 function draw() {
-  background('#ae7cf1');
+  background('#FFE891');
   drawChest();
   drawChestCounter();
-  drawItemCounts()
+  drawItemCounts();
 
   if (chestOpened){
     displayPopup();
@@ -97,23 +97,41 @@ function draw() {
 // Draws open or closed chest depending on chestOpened state
 function drawChest(){
   if(!chestOpened){
-    image(chestImgOpen, 190, 200, chestImgOpen.width, chestImgOpen.height);
+    image(chestImgOpen, 100, 220, chestImgOpen.width, chestImgOpen.height);
   } else {
-    image(chestImgClose, 190, 200, chestImgClose.width, chestImgClose.height);
+    image(chestImgClose, 100, 220, chestImgClose.width, chestImgClose.height);
   }
+
+  fill('#461D7C');
+  noStroke();
+  rectMode(CENTER);
+  rect(400,60, 900, 150);
+
+  fill('#F4F4F4')
+  rect(800,200,320,900);
+
+  stroke('#999999')
+  strokeWeight(5)
+  rect(88,68,150,90);
+
+  fill('#999999');
+  noStroke();
+  rect(300,140,680,20);
+
+  rect(640,300,10,900);
 }
 
 // Draws the counter of chests opened
 function drawChestCounter(){
-  fill(255);
-  textSize(18);
+  fill('#000000');
+  textSize(25);
   textAlign(LEFT, TOP);
-  text("Chest Opened: " + chestOpenCount, 10, 10);
+  text("Chests\nOpened: " + chestOpenCount, 20, 40);
 }
 
 // Handles pressing the mouse over area drawn over chest
 function mousePressed(){
-  if (!chestOpened && mouseX > width / 2 - 50 && mouseX < width / 2 + 50 && mouseY > 500 - 100 && mouseY < 500 + 100){
+  if (!chestOpened && mouseX > 310 - 200 && mouseX < 310 + 200 && mouseY > 400 - 200 && mouseY < 400 + 200){
     openChest();
   } else {
     chestOpened = false;
@@ -132,7 +150,7 @@ function openChest(){
 
 // Draws a list of every item and how many of each have been pulled
 function drawItemCounts(){
-  fill(255);
+  fill(0);
   textSize(18);
   textAlign(RIGHT, TOP);
 
@@ -146,7 +164,7 @@ function drawItemCounts(){
 
 // Draws the picture for the pulled item
 function drawItem(itemPulledImage){
-  image(itemPulledImage, 265, 150, 270, 200);
+  image(itemPulledImage, 175, 170, 270, 200);
 }
 
 // Draws a colored rectangle corresponding to itemPulled rarity and popupText for itemPulled description
@@ -154,11 +172,11 @@ function displayPopup(){
   fill(rarityColor);
   strokeWeight(4);
   rectMode(CENTER);
-  rect(400, 250, 285, 220);
+  rect(310, 270, 285, 220);
   textAlign(CENTER, CENTER);
   textSize(25);
   fill(255);
-  text(popupText, width / 2, 60);
+  text(popupText, 400, 65);
 }
 
 // Rolls 0-100 to pick rarity, then rolls again within rarity to pick item
@@ -180,7 +198,7 @@ function itemPull(){
   } else if (rand <= 6 && rand > 1) {
     rarity = "Legendary";
   } else if (rand <= 1) {
-    rarity = "LMtT";
+    rarity = "Ultra";
   }
 
   // Takes the rarity and rolls for an item in that rarity
@@ -230,7 +248,7 @@ function itemPull(){
       // TODO Implement a "play sound effect" here based off rarity quality
       break;
 
-    case 'LMtT':
+    case 'Ultra':
       itemPulled = 'm1';
       rarityColor = '#FDD023';
       // TODO Implement a "play sound effect" here based off rarity quality (Tiger Rag!!)
