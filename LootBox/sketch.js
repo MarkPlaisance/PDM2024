@@ -20,6 +20,7 @@ let itemImages = {};
 let itemPulledImage;
 let itemCounts = {};
 let rarityColor;
+let myFont;
 const itemMap = {
   'c1': { name: 'The Lockett Basement', image: 'assets/locketBasement.jpg'},
   'c2': { name: 'Herget Hall', image: 'assets/hergetHall.webp'},
@@ -82,7 +83,7 @@ function setup() {
 
 // Draws everything, calls functions for drawn elements
 function draw() {
-  background(220);
+  background('#ae7cf1');
   drawChest();
   drawChestCounter();
   drawItemCounts()
@@ -104,7 +105,7 @@ function drawChest(){
 
 // Draws the counter of chests opened
 function drawChestCounter(){
-  fill(0);
+  fill(255);
   textSize(18);
   textAlign(LEFT, TOP);
   text("Chest Opened: " + chestOpenCount, 10, 10);
@@ -131,7 +132,7 @@ function openChest(){
 
 // Draws a list of every item and how many of each have been pulled
 function drawItemCounts(){
-  fill(0);
+  fill(255);
   textSize(18);
   textAlign(RIGHT, TOP);
 
@@ -156,7 +157,7 @@ function displayPopup(){
   rect(400, 250, 285, 220);
   textAlign(CENTER, CENTER);
   textSize(25);
-  fill(0);
+  fill(255);
   text(popupText, width / 2, 60);
 }
 
