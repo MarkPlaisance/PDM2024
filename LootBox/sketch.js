@@ -3,9 +3,6 @@
     Box opening sound effect (extremely short)
     Sound effect for each item rarity
     Background music
-  Arduino:
-    Button to open chest (AND??) joystick as a mouse replacement
-    Light when opening OR rbg light indicating rarity (Should be able to use rarityColor for RBG LED)
 */
 
 let chestOpened = false;
@@ -20,7 +17,14 @@ let itemCounts = {};
 let rarityColor;
 let lastChestOpenTime = 0;
 let lastJoyStickPressTime = 0;
-
+let sounds = new Tone.Players ({
+  'buzzer' : 'assets/buzzer.mp3', // common
+  'wow' : 'assets/wow.mp3', // uncommon
+  'hooray' : 'assets/hooray.mp3', //rare
+  'yippee' : 'assets/yippee.mp3', //epic
+  'vinethud' : 'assets/vinethud.mp3', // legendary
+  'meow' : 'assets/meow.mp3' //mike
+})
 
 const itemMap = {
   'c1': { name: 'The Lockett Basement', image: 'assets/locketBasement.jpg'},
@@ -73,6 +77,8 @@ let speed = 3;
 let circleRadius = 25;
 
 
+sounds.toDestination();
+
 // Preloads images
 function preload(){
   chestImgOpen = loadImage('assets/chestClose.png');
@@ -112,6 +118,9 @@ function draw() {
     drawItem(itemPulledImage);
   }
 
+  if (!chestOpened){
+    port.write('000000' + "\n");
+  }
 
   // Arduino code below here
   let str = port.readUntil("\n");
@@ -142,19 +151,21 @@ function draw() {
   circle(circleX, circleY, circleRadius);
 }
 
+// Handles joystick presses
 function handleJoystickPress() {
   const currentTime = millis();
   if (currentTime - lastJoyStickPressTime > 1000) { // 1000 milliseconds delay
     lastJoyStickPressTime = currentTime;
 
-    if (!chestOpened && circleX > 100 && circleX < 300 && circleY > 220 && circleY < 420) {
+    if (!chestOpened && circleX > 100 && circleX < 500 && circleY > 100 && circleY < 500) {
       mousePressed();
     } else {
-      chestOpened = false; // Ensure the chest closes only if it's already opened
+      chestOpened = false;
     }
   }
 }
 
+ // Connect to Arduino
 function connect() {
   if (!port.opened()) {
     port.open('Arduino', 9600);
@@ -163,7 +174,7 @@ function connect() {
   }
 }
 
-// Draws open or closed chest depending on chestOpened state
+// Draws open or closed chest depending on chestOpened state, draws background elements
 function drawChest(){
   if(!chestOpened){
     image(chestImgOpen, 100, 220, chestImgOpen.width, chestImgOpen.height);
@@ -198,21 +209,7 @@ function drawChestCounter(){
   text("Chests\nOpened: " + chestOpenCount, 20, 40);
 }
 
-// Handles pressing the mouse over area drawn over chest
-// function mousePressed() {
-//   const currentTime = millis();
-//   if (!chestOpened && mouseX > 100 && mouseX < 300 && mouseY > 220 && mouseY < 420) {
-//     if (currentTime - lastChestOpenTime > 1000) {
-//       openChest();
-//       lastChestOpenTime = currentTime;
-//     } else {
-//       console.log("Wait a bit longer before opening another chest!");
-//     }
-//   } else {
-//     chestOpened = false;
-//   }
-// }
-
+// Handles when the mouse is pressed
 function mousePressed(){
   if (!chestOpened && mouseX > 310 - 200 && mouseX < 310 + 200 && mouseY > 400 - 200 && mouseY < 400 + 200){
     openChest();
@@ -300,8 +297,8 @@ function itemPull(){
       itemRange = Math.floor(Math.random() * 10) + 1; // Random [1-10]
       itemIndex = itemRange.toString(); // Convert rand(itemRange) to string(itemIndex)
       itemPulled = rarityShort.concat(itemIndex); // Combines rarityShort with rand 1-10
-      rarityColor = '#EBEBEB';
-      // TODO Implement a "play sound effect" here based off rarity quality
+      rarityColor = '#EBEBEB'; // Sets background color to match rarity
+      sounds.player("buzzer").start(); // Plays rarity specific sound effect
       break;
 
     case 'Uncommon':
@@ -309,8 +306,8 @@ function itemPull(){
       itemRange = Math.floor(Math.random() * 8) + 1;
       itemIndex = itemRange.toString();
       itemPulled = rarityShort.concat(itemIndex);
-      rarityColor = '#44D5FF';
-      // TODO Implement a "play sound effect" here based off rarity quality
+      rarityColor = '#00FD19';
+      sounds.player("wow").start();
       break;
 
     case 'Rare':
@@ -318,8 +315,8 @@ function itemPull(){
       itemRange = Math.floor(Math.random() * 6) + 1;
       itemIndex = itemRange.toString();
       itemPulled = rarityShort.concat(itemIndex);
-      rarityColor = '#C90000';
-      // TODO Implement a "play sound effect" here based off rarity quality
+      rarityColor = '#44D5FF';
+      sounds.player("hooray").start();
       break;
 
     case 'Epic':
@@ -327,8 +324,8 @@ function itemPull(){
       itemRange = Math.floor(Math.random() * 4) + 1;
       itemIndex = itemRange.toString();
       itemPulled = rarityShort.concat(itemIndex);
-      rarityColor = '#BF00EE';
-      // TODO Implement a "play sound effect" here based off rarity quality
+      rarityColor = '#C90000';
+      sounds.player("yippee").start();
       break;
 
     case 'Legendary':
@@ -337,15 +334,18 @@ function itemPull(){
       itemIndex = itemRange.toString();
       itemPulled = rarityShort.concat(itemIndex);
       rarityColor = '#FFC127';
-      // TODO Implement a "play sound effect" here based off rarity quality
+      sounds.player("vinethud").start();
       break;
 
     case 'Ultra':
       itemPulled = 'm1';
       rarityColor = '#FDD023';
-      // TODO Implement a "play sound effect" here based off rarity quality (Tiger Rag!!)
+      sounds.player("meow").start();
       break;
   }
   itemPulledImage = itemImages[itemPulled];
   itemCounts[itemPulled]++
+
+  port.write(rarity + "\n");
+
 }
