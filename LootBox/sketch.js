@@ -1,6 +1,4 @@
 /* TODO
-  Software:
-    Maybe put short delay between open attempt so sound effects have time to play
   Music:
     Box opening sound effect (extremely short)
     Sound effect for each item rarity
@@ -20,7 +18,10 @@ let itemImages = {};
 let itemPulledImage;
 let itemCounts = {};
 let rarityColor;
-let myFont;
+let lastChestOpenTime = 0;
+let lastJoyStickPressTime = 0;
+
+
 const itemMap = {
   'c1': { name: 'The Lockett Basement', image: 'assets/locketBasement.jpg'},
   'c2': { name: 'Herget Hall', image: 'assets/hergetHall.webp'},
@@ -63,6 +64,15 @@ for (let key in itemMap){
   itemCounts[key] = 0;
 }
 
+// Arduino code below here
+let port;
+let joyX = 0, joyY = 0, sw = 0;
+let connectButton;
+let circleX, circleY;
+let speed = 3;
+let circleRadius = 25;
+
+
 // Preloads images
 function preload(){
   chestImgOpen = loadImage('assets/chestClose.png');
@@ -79,6 +89,15 @@ function preload(){
 // Sets up canvas
 function setup() {
   createCanvas(900, 635);
+
+
+  // Arduino code below here
+  port = createSerial();
+  circleX = width / 2;
+  circleY = height / 2;
+
+  connectButton = createButton("Connect");
+  connectButton.mouseClicked(connect);
 }
 
 // Draws everything, calls functions for drawn elements
@@ -91,6 +110,56 @@ function draw() {
   if (chestOpened){
     displayPopup();
     drawItem(itemPulledImage);
+  }
+
+
+  // Arduino code below here
+  let str = port.readUntil("\n");
+  let values = str.split(",");
+  if (values.length > 2) {
+    joyX = values[0];
+    joyY = values[1];
+    sw = Number(values[2]);
+
+    if (joyX > 0) {
+      circleX += speed;
+    } else if (joyX < 0) {
+      circleX -= speed;
+    }
+
+    if (joyY > 0) {
+      circleY += speed;
+    } else if (joyY < 0) {
+      circleY -= speed;
+    }
+  }
+
+  // Simulate mouse click with joystick push
+  if (sw == 1) {
+    handleJoystickPress();
+  }
+
+  circle(circleX, circleY, circleRadius);
+}
+
+function handleJoystickPress() {
+  const currentTime = millis();
+  if (currentTime - lastJoyStickPressTime > 1000) { // 1000 milliseconds delay
+    lastJoyStickPressTime = currentTime;
+
+    if (!chestOpened && circleX > 100 && circleX < 300 && circleY > 220 && circleY < 420) {
+      mousePressed();
+    } else {
+      chestOpened = false; // Ensure the chest closes only if it's already opened
+    }
+  }
+}
+
+function connect() {
+  if (!port.opened()) {
+    port.open('Arduino', 9600);
+  } else {
+    port.close();
   }
 }
 
@@ -130,6 +199,20 @@ function drawChestCounter(){
 }
 
 // Handles pressing the mouse over area drawn over chest
+// function mousePressed() {
+//   const currentTime = millis();
+//   if (!chestOpened && mouseX > 100 && mouseX < 300 && mouseY > 220 && mouseY < 420) {
+//     if (currentTime - lastChestOpenTime > 1000) {
+//       openChest();
+//       lastChestOpenTime = currentTime;
+//     } else {
+//       console.log("Wait a bit longer before opening another chest!");
+//     }
+//   } else {
+//     chestOpened = false;
+//   }
+// }
+
 function mousePressed(){
   if (!chestOpened && mouseX > 310 - 200 && mouseX < 310 + 200 && mouseY > 400 - 200 && mouseY < 400 + 200){
     openChest();
@@ -140,13 +223,22 @@ function mousePressed(){
 
 // Handles actions when chest opened, calls itemPull, displayPopup, increments chestOpenCount
 function openChest(){
-  chestOpened = true;
-  chestOpenCount++;
-  itemPull();
-  popupText = ("You got: " + itemMap[itemPulled].name + "\nRarity: " + rarity + "\nClick to Continue");
+  const currentTime = millis();
+  const timeSinceLastOpen = currentTime - lastChestOpenTime;
 
-  displayPopup();
+  if (timeSinceLastOpen > 1000) {
+    lastChestOpenTime = currentTime;
+    chestOpened = true;
+    chestOpenCount++;
+    itemPull();
+    popupText = ("You got: " + itemMap[itemPulled].name + "\nRarity: " + rarity + "\nClick to Continue");
+
+    displayPopup();
+  } else {
+    console.log("Wait a bit longer before opening another chest!");
+  }
 }
+
 
 // Draws a list of every item and how many of each have been pulled
 function drawItemCounts(){
