@@ -1,7 +1,3 @@
-/* TODO
-  Music:
-    Background music
-*/
 
 let chestOpened = false;
 let chestOpenCount = 0;
