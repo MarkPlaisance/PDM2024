@@ -35,7 +35,7 @@ const itemMap = {
   'u1': { name: 'Football Locker Room', image: 'assets/footballLockerRooms.webp'},
   'u2': { name: 'Enchanted Forest', image: 'assets/enchantedForest.jpg'},
   'u3': { name: 'Pregame!', image: 'assets/pregame.jpg'},
-  'u4': { name: "Rasing Cane's", image: 'assets/canes.jpg'},
+  'u4': { name: "Raising Cane's", image: 'assets/canes.jpg'},
   'u5': { name: 'Japanese Magnolias', image: 'assets/japaneseMagnolias.jpg'},
   'u6': { name: 'Memorial Towers', image: 'assets/memorialTower.jpg'},
   'u7': { name: 'Azalea & Camellia Hall', image: 'assets/azaleaCameliaHalls.jpg'},
