@@ -1,7 +1,5 @@
 /* TODO
   Music:
-    Box opening sound effect (extremely short)
-    Sound effect for each item rarity
     Background music
 */
 
@@ -18,6 +16,7 @@ let rarityColor;
 let lastChestOpenTime = 0;
 let lastJoyStickPressTime = 0;
 let sounds = new Tone.Players ({
+  'bgm' : 'assets/bgm.wav', // bgm
   'buzzer' : 'assets/buzzer.mp3', // common
   'wow' : 'assets/wow.mp3', // uncommon
   'hooray' : 'assets/hooray.mp3', //rare
@@ -25,7 +24,6 @@ let sounds = new Tone.Players ({
   'vinethud' : 'assets/vinethud.mp3', // legendary
   'meow' : 'assets/meow.mp3' //mike
 })
-
 const itemMap = {
   'c1': { name: 'The Lockett Basement', image: 'assets/locketBasement.jpg'},
   'c2': { name: 'Herget Hall', image: 'assets/hergetHall.webp'},
@@ -68,7 +66,7 @@ for (let key in itemMap){
   itemCounts[key] = 0;
 }
 
-// Arduino code below here
+// Arduino initalizers
 let port;
 let joyX = 0, joyY = 0, sw = 0;
 let connectButton;
@@ -95,9 +93,10 @@ function preload(){
 // Sets up canvas
 function setup() {
   createCanvas(900, 635);
+  sounds.player("bgm").start();
 
 
-  // Arduino code below here
+  // Arduino connection code below here
   port = createSerial();
   circleX = width / 2;
   circleY = height / 2;
@@ -121,6 +120,7 @@ function draw() {
   if (!chestOpened){
     port.write('000000' + "\n");
   }
+
 
   // Arduino code below here
   let str = port.readUntil("\n");
