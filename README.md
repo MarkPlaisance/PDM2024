@@ -23,7 +23,7 @@ This is a loot box game created using p5.js, Javascript, and Arduino. It is code
 
 
 ## Narrative Description <a name="NarrativeDescription"></a>
-Loot Box is a game where you can open loot boxes and get items related to LSU and it's culture. The only goal is to get as many of each item as you can. There are six rarities, ranging from Common to Ultra. The player can use a joystick or mouse to click and open chests, and they will be rewarded with one of thirty-one possible items. Along with seeing the item and hearing a sound corralating to the item's rarity, the arduino LED's will light up, indicating which rarity has been pulled.
+Loot Box is a game where you open chest and get items related to LSU and its culture. The only goal is to get as many of each item as you can. There are six rarities, ranging from Common to Ultra. The player can use a joystick or mouse to click and open chests, and they will be rewarded with one of thirty-one possible items. Along with seeing the item and hearing a sound correlating to the item's rarity, the arduino LED's will light up, indicating which rarity has been pulled.
 
 
 ## Images &amp; Diagrams<a name="Images"></a>
